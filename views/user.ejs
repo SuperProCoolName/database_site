@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% const routes_amount = routes.length %>
+    <h1>Найдено <%= routes_amount %> маршрутов</h1>
+    <h3>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Departure station</th>
+          <th>Arrival station</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>City of departure</th>
+          <th>City of arrival</th>
+          <th></th>
+        </tr>
+        <% for (let i = 0; i < routes.length; i++) { %>
+        <tr>
+          <td class="far-left"><%= routes[i].idRoutes %></td>
+          <td><%= routes[i].departure_station_name %></td>
+          <td><%= routes[i].arrival_station_name %></td>
+          <td><%= routes[i].departure_date.toLocaleDateString() %></td>
+          <td><%= routes[i].departure_time %></td>
+          <td><%= routes[i].departure_station_city %></td>
+          <td><%= routes[i].arrival_station_city %></td>
+          <td>
+            <button
+              onclick="window.location.href='/buy_ticket/ticket_id_<%= i %>'"
+            >
+              Buy ticket number <%= routes[i].idRoutes %>
+            </button>
+          </td>
+        </tr>
+        <% } %>
+      </table>
+    </h3>
+    <form method="GET" action="/user">
+      <input type="checkbox" name="filterCheckbox" value="true" />idRoute = 0
+      <button type="submit">Submit</button>
+    </form>
+    <button onclick="window.location.href='/admin'">Admin panel</button>
+  </body>
+</html>
