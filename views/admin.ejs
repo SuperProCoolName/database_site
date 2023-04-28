@@ -20,6 +20,7 @@
           <th>Time</th>
           <th>City of departure</th>
           <th>City of arrival</th>
+          <th>Price</th>
           <th></th>
           <th></th>
         </tr>
@@ -32,33 +33,36 @@
           <td><%= routes[i].departure_time %></td>
           <td><%= routes[i].departure_station_city %></td>
           <td><%= routes[i].arrival_station_city %></td>
+          <td><%= routes[i].price %></td>
           <td>
             <button
               onclick="window.location.href='/edit_ticket/ticket_id_<%= i %>'"
             >
-              Edit ticket number <%= i %>
+              Edit ticket number <%= routes[i].idRoutes %>
             </button>
           </td>
           <td>
             <button
               onclick="window.location.href='/delete_ticket/ticket_id_<%= i %>'"
             >
-              Delete ticket number <%= i %>
+              Delete ticket number <%= routes[i].idRoutes %>
             </button>
           </td>
         </tr>
         <% } %>
       </table>
-      <h1>
-        <button onclick="window.location.href='/create_ticket'">
-          Create new route
-        </button>
-      </h1>
+      <button onclick="window.location.href='/user'">Exit admin panel</button>
     </h3>
-    <form method="GET" action="/admin">
-      <input type="checkbox" name="filterCheckbox" value="true" />idRoute = 0
+    <form method="GET" action="/filter_admin">
+      <input type="checkbox" name="idRoute2Checkbox" value="true" />idRoute = 2
+      <input type="checkbox" name="cityEskiCheckbox" value="true" />city = Eski
+      Qırım
       <button type="submit">Submit</button>
     </form>
-    <button onclick="window.location.href='/user'">Exit admin panel</button>
+    <h1>
+      <button onclick="window.location.href='/create_ticket'">
+        Create new route
+      </button>
+    </h1>
   </body>
 </html>

@@ -20,6 +20,7 @@
           <th>Time</th>
           <th>City of departure</th>
           <th>City of arrival</th>
+          <th>Price</th>
           <th></th>
         </tr>
         <% for (let i = 0; i < routes.length; i++) { %>
@@ -31,6 +32,7 @@
           <td><%= routes[i].departure_time %></td>
           <td><%= routes[i].departure_station_city %></td>
           <td><%= routes[i].arrival_station_city %></td>
+          <td><%= routes[i].price %></td>
           <td>
             <button
               onclick="window.location.href='/buy_ticket/ticket_id_<%= i %>'"
@@ -42,10 +44,12 @@
         <% } %>
       </table>
     </h3>
-    <form method="GET" action="/user">
-      <input type="checkbox" name="filterCheckbox" value="true" />idRoute = 0
+    <button onclick="window.location.href='/admin'">Admin panel</button>
+    <form method="GET" action="/filter_user">
+      <input type="checkbox" name="idRoute2Checkbox" value="true" />idRoute = 2
+      <input type="checkbox" name="cityEskiCheckbox" value="true" />city = Eski
+      Qırım
       <button type="submit">Submit</button>
     </form>
-    <button onclick="window.location.href='/admin'">Admin panel</button>
   </body>
 </html>
