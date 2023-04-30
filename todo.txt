@@ -1,17 +1,25 @@
 create_ticket.ejs
 
-buy_ticket:
-    buy_ticket/ticket_id_{id}
-
 delete_ticket:
     delete_ticket/ticket_id_{id}
 
 filter on the same page
 (when filter on admin you go to user.ejs)
-multiple filters
 
+???
 user.ejs > my_tickets.ejs
 my_tickets.ejs - show all tickets that you bought
+???
 
 admin.ejs > sold_tickets.ejs
 sold_tickets.ejs - show all tickets that were sold
+
+login.ejs
+register.ejs
+do something with password
+
+DONE: 
+
+buy_ticket:
+    buy_ticket/ticket_id_{id}
+    multiple filters

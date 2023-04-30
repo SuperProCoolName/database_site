@@ -24,28 +24,28 @@
           <th></th>
           <th></th>
         </tr>
-        <% for (let i = 0; i < routes.length; i++) { %>
+        <% for (let id = 0; id < routes.length; id++) { %>
         <tr>
-          <td class="far-left"><%= i %></td>
-          <td><%= routes[i].departure_station_name %></td>
-          <td><%= routes[i].arrival_station_name %></td>
-          <td><%= routes[i].departure_date.toLocaleDateString() %></td>
-          <td><%= routes[i].departure_time %></td>
-          <td><%= routes[i].departure_station_city %></td>
-          <td><%= routes[i].arrival_station_city %></td>
-          <td><%= routes[i].price %></td>
+          <td class="far-left"><%= routes[id].idRoutes %></td>
+          <td><%= routes[id].departure_station_name %></td>
+          <td><%= routes[id].arrival_station_name %></td>
+          <td><%= routes[id].departure_date.toLocaleDateString() %></td>
+          <td><%= routes[id].departure_time %></td>
+          <td><%= routes[id].departure_station_city %></td>
+          <td><%= routes[id].arrival_station_city %></td>
+          <td><%= routes[id].price %></td>
           <td>
             <button
-              onclick="window.location.href='/edit_ticket/ticket_id_<%= i %>'"
+              onclick="window.location.href='/edit_ticket/ticket_id_<%= id %>'"
             >
-              Edit ticket number <%= routes[i].idRoutes %>
+              Edit ticket number <%= routes[id].idRoutes %>
             </button>
           </td>
           <td>
             <button
-              onclick="window.location.href='/delete_ticket/ticket_id_<%= i %>'"
+              onclick="window.location.href='/delete_ticket/ticket_id_<%= id %>'"
             >
-              Delete ticket number <%= routes[i].idRoutes %>
+              Delete ticket number <%= routes[id].idRoutes %>
             </button>
           </td>
         </tr>
@@ -54,9 +54,25 @@
       <button onclick="window.location.href='/user'">Exit admin panel</button>
     </h3>
     <form method="GET" action="/filter_admin">
-      <input type="checkbox" name="idRoute2Checkbox" value="true" />idRoute = 2
-      <input type="checkbox" name="cityEskiCheckbox" value="true" />city = Eski
+      <input type="checkbox" name="idRoute3Checkbox" value="true" <% if(isFirstChecked) { %> checked <% } else { %> <% } %> />idRoute = 3
+      <input type="checkbox" name="cityEskiCheckbox" value="true" <% if(isSecondChecked) { %> checked <% } else { %> <% } %> />city = Eski
       Qırım
+      <input
+        type="number"
+        name="minPriceInput"
+        value="<%= priceMin %>"
+        min="0"
+        max="2000"
+        step="50"
+      />
+      <input
+        type="number"
+        name="maxPriceInput"
+        value="<%= priceMax %>"
+        min="0"
+        max="2000"
+        step="50"
+      />
       <button type="submit">Submit</button>
     </form>
     <h1>
