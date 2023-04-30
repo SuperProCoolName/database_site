@@ -36,16 +36,16 @@
           <td><%= routes[id].price %></td>
           <td>
             <button
-              onclick="window.location.href='/edit_ticket/ticket_id_<%= id %>'"
+              onclick="window.location.href='/edit_route/route_id_<%= id %>'"
             >
-              Edit ticket number <%= routes[id].idRoutes %>
+              Edit route number <%= routes[id].idRoutes %>
             </button>
           </td>
           <td>
             <button
-              onclick="window.location.href='/delete_ticket/ticket_id_<%= id %>'"
+              onclick="window.location.href='/delete_route/route_id_<%= id %>'"
             >
-              Delete ticket number <%= routes[id].idRoutes %>
+              Delete route number <%= routes[id].idRoutes %>
             </button>
           </td>
         </tr>
@@ -54,9 +54,6 @@
       <button onclick="window.location.href='/user'">Exit admin panel</button>
     </h3>
     <form method="GET" action="/filter_admin">
-      <input type="checkbox" name="idRoute3Checkbox" value="true" <% if(isFirstChecked) { %> checked <% } else { %> <% } %> />idRoute = 3
-      <input type="checkbox" name="cityEskiCheckbox" value="true" <% if(isSecondChecked) { %> checked <% } else { %> <% } %> />city = Eski
-      Qırım
       <input
         type="number"
         name="minPriceInput"
@@ -70,15 +67,25 @@
         name="maxPriceInput"
         value="<%= priceMax %>"
         min="0"
-        max="2000"
+        max="1000"
         step="50"
       />
+      <select name="departure_station_city">
+        <option value="">Select departure city</option>
+        <% for (let id = 0; id < cities.length; id++) { %>
+        <option value="<%= cities[id] %>"><%= cities[id] %></option>
+        <% }; %>
+      </select>
+      <select name="arrival_station_city">
+        <option value="">Select arrival city</option>
+        <% for (let id = 0; id < cities.length; id++) { %>
+        <option value="<%= cities[id] %>"><%= cities[id] %></option>
+        <% }; %>
+      </select>
       <button type="submit">Submit</button>
     </form>
-    <h1>
-      <button onclick="window.location.href='/create_ticket'">
-        Create new route
-      </button>
-    </h1>
+    <button onclick="window.location.href='/create_route'">
+      Create new route
+    </button>
   </body>
 </html>

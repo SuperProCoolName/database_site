@@ -125,8 +125,8 @@ JOIN
           cities: allCities,
           isFirstChecked: false,
           isSecondChecked: false,
-          priceMin: 250,
-          priceMax: 1700,
+          priceMin: 0,
+          priceMax: 1000,
         });
       }
     }
@@ -146,7 +146,7 @@ FROM
 JOIN
     stations AS dep_stations ON routes.departure_station = dep_stations.idStations
 JOIN
-    stations AS arr_stations ON routes.arrival_station = arr_stations.idStations;`,
+    stations AS arr_stations ON routes.arrival_station = arr_stations.idStations`,
     (err, results) => {
       if (err) {
         console.log(err);
@@ -154,10 +154,11 @@ JOIN
       } else {
         res.render("admin", {
           routes: results,
+          cities: allCities,
           isFirstChecked: false,
           isSecondChecked: false,
-          priceMin: 250,
-          priceMax: 1700,
+          priceMin: 0,
+          priceMax: 1000,
         });
       }
     }
@@ -166,8 +167,6 @@ JOIN
 
 app.get("/filter_user", function (req, res) {
   // Получение параметров запроса
-  var idRoute = req.query.idRoute3Checkbox;
-  var cityEski = req.query.cityEskiCheckbox;
   var priceMin = req.query.minPriceInput;
   var priceMax = req.query.maxPriceInput;
   var departure_station_city = req.query.departure_station_city;
@@ -205,11 +204,6 @@ app.get("/filter_user", function (req, res) {
     sql += " AND arr_stations.city IS NOT NULL";
   }
   var conditions = [];
-  if (idRoute) conditions.push("idRoutes = 3");
-  if (cityEski)
-    conditions.push(
-      "(dep_stations.city = 'Eski Qırım' OR arr_stations.city = 'Eski Qırım')"
-    );
   // Соединяем условия с помощью оператора AND и добавляем их к SQL-запросу
   if (conditions.length > 0) {
     sql += " AND " + conditions.join(" AND ");
@@ -225,21 +219,20 @@ app.get("/filter_user", function (req, res) {
       cities: allCities,
       priceMin: priceMin,
       priceMax: priceMax,
-      isFirstChecked: idRoute,
-      isSecondChecked: cityEski,
     });
   });
 });
 
 app.get("/filter_admin", function (req, res) {
   // Получение параметров запроса
-  var idRoute = req.query.idRoute3Checkbox;
-  var cityEski = req.query.cityEskiCheckbox;
   var priceMin = req.query.minPriceInput;
   var priceMax = req.query.maxPriceInput;
+  var departure_station_city = req.query.departure_station_city;
+  var arrival_station_city = req.query.arrival_station_city;
   var minPrice = 0; // устанавливаем минимальную цену по умолчанию
-  var maxPrice = 999999999; // устанавливаем максимальную цену по умолчанию
-
+  var maxPrice = 9999; // устанавливаем максимальную цену по умолчанию
+  let cityConditionDeparture = "";
+  let cityConditionArrival = "";
   var sql = `SELECT 
       routes.*,
       dep_stations.name AS departure_station_name,
@@ -253,15 +246,22 @@ app.get("/filter_admin", function (req, res) {
     JOIN
       stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
     WHERE 
-      price >= ? and price <= ?`;
+      price >= ? and price <= ?
+      ${cityConditionDeparture}${cityConditionArrival}`;
   var params = [priceMin || minPrice, priceMax || maxPrice];
-
+  if (departure_station_city && departure_station_city !== "") {
+    sql += " AND dep_stations.city = ?";
+    params.push(departure_station_city);
+  } else {
+    sql += " AND dep_stations.city IS NOT NULL";
+  }
+  if (arrival_station_city && arrival_station_city !== "") {
+    sql += " AND arr_stations.city = ?";
+    params.push(arrival_station_city);
+  } else {
+    sql += " AND arr_stations.city IS NOT NULL";
+  }
   var conditions = [];
-  if (idRoute) conditions.push("idRoutes = 3");
-  if (cityEski)
-    conditions.push(
-      "dep_stations.city = 'Eski Qırım' OR arr_stations.city = 'Eski Qırım'"
-    );
   // Соединяем условия с помощью оператора AND и добавляем их к SQL-запросу
   if (conditions.length > 0) {
     sql += " AND " + conditions.join(" AND ");
@@ -274,8 +274,7 @@ app.get("/filter_admin", function (req, res) {
     // Отправка списка квартир на клиент
     res.render("admin", {
       routes: results,
-      isFirstChecked: idRoute,
-      isSecondChecked: cityEski,
+      cities: allCities,
       priceMin: priceMin,
       priceMax: priceMax,
     });
@@ -353,6 +352,45 @@ app.get("/user_panel", function (req, res) {
   res.render("user_panel", {
     ticket: null,
     email: null,
+  });
+});
+
+app.get("/create_route", function (req, res) {
+  db.query(`SELECT * FROM stations`, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error retrieving routes");
+    } else {
+      res.render("create_route", {
+        stations: results,
+      });
+    }
+  });
+});
+
+app.post("/create_route", function (req, res) {
+  let departureDate = req.body.departure_date;
+  let departureTime = req.body.departure_time;
+  let departureStation = req.body.departure_station;
+  let arrivalStation = req.body.arrival_station;
+  let price = req.body.price;
+  let sql = `SELECT MAX(idRoutes) AS maxId FROM routes`;
+  db.query(sql, function (err, results, field) {
+    if (err) throw error;
+    let nextRouteId = results[0].maxId + 1;
+    sql = `INSERT INTO routes (idRoutes, departure_date, departure_time, departure_station, arrival_station, price) VALUES (?, ?, ?, ?, ?, ?)`;
+    let params = [
+      nextRouteId,
+      departureDate,
+      departureTime,
+      departureStation,
+      arrivalStation,
+      price,
+    ];
+    db.query(sql, params, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect("/admin");
+    });
   });
 });
 
