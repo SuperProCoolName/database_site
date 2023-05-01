@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Edit Route</title>
+  </head>
+  <body>
+    <h1>Edit Route</h1>
+    <form action="/edit_route/route_id_<%= route.idRoutes %>" method="POST">
+  <label for="departure_station">Departure Station:</label>
+    <select name="departure_station">
+      <% for (var i = 0; i < stations.length; i++) { %>
+        <option value="<%= stations[i].idStations %>" <%= stations[i].idStations === route.departure_station ? 'selected' : '' %>>
+          <%= stations[i].city %> (<%= stations[i].name %>)
+        </option>
+      <% } %>
+    </select>
+  <br />
+  <label for="arrival_station">Arrival Station:</label>
+    <select name="arrival_station">
+      <% for (var i = 0; i < stations.length; i++) { %>
+        <option value="<%= stations[i].idStations %>" <%= stations[i].idStations === route.arrival_station ? 'selected' : '' %>>
+          <%= stations[i].city %> (<%= stations[i].name %>)
+        </option>
+      <% } %>
+    </select>
+    <br />
+      <label for="departure_date">Departure Date: </label>
+      <input
+        type="date"
+        name="departure_date"
+        value="<%= route.departure_date.toISOString().substr(0, 10) %>"
+        min="<%= new Date().toISOString().split('T')[0] %>"
+        required
+      />
+      <br />
+      <label for="departure_time">Departure Time:</label>
+      <input
+        type="time"
+        name="departure_time"
+        value="<%= route.departure_time.substr(0, 5) %>"
+        required
+      />
+      <div>
+        <label for="price">Price:</label>
+        <input type="text" name="price" value="<%= route.price %>" />
+      </div>
+      <button type="submit">Update Route</button>
+    </form>
+  </body>
+</html>
