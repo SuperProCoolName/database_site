@@ -74,22 +74,19 @@ db.query(
 );
 
 db.query(
-  `CREATE TABLE IF NOT EXISTS tickets (
-  idTickets INT NOT NULL,
-  purchase_date DATE NOT NULL,
-  departure_date DATE NOT NULL,
-  departure_time TIME NOT NULL,
-  seat INT NOT NULL,
-  price DECIMAL(10,2) NOT NULL,
-  route INT NOT NULL,
-  customer INT NOT NULL,
-  PRIMARY KEY (idTickets)
+  `CREATE TABLE IF NOT EXISTS users (
+  idUser INT NOT NULL,
+  userLogin VARCHAR(255) NOT NULL,
+  userPassword VARCHAR(255) NOT NULL,
+  userboughtTicketsId INT NOT NULL,
+  isAdmin BOOL NOT NULL,
+  PRIMARY KEY (idUser)
 )`,
   (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("customers, stations, routes, tickets tables created");
+      console.log("customers, stations, routes, users tables created");
     }
   }
 );
@@ -131,6 +128,27 @@ JOIN
       }
     }
   );
+});
+
+app.get("/admin_login", function (req, res) {
+  res.render("admin_login");
+});
+
+app.post("/admin_login", function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const sql = `SELECT idUser, userEmail, userPassword, userboughtTicketsId, isAdmin FROM users WHERE userEmail = ? AND userPassword = ?`;
+  params = [email, password];
+  db.query(sql, params, function (err, results) {
+    if (results.length > 0) {
+      if (results[0].isAdmin) {
+        res.redirect("/admin");
+      }
+    } else {
+      res.redirect("/user");
+    }
+  });
 });
 
 app.get("/admin", (req, res) => {
@@ -374,6 +392,14 @@ app.post("/create_route", function (req, res) {
   let departureStation = req.body.departure_station;
   let arrivalStation = req.body.arrival_station;
   let price = req.body.price;
+
+  if (departureStation === arrivalStation) {
+    res
+      .status(400)
+      .send(`Departure station cannot be the same as arrival station`);
+    return;
+  }
+
   let sql = `SELECT MAX(idRoutes) AS maxId FROM routes`;
   db.query(sql, function (err, results, field) {
     if (err) throw error;
@@ -391,6 +417,82 @@ app.post("/create_route", function (req, res) {
       if (error) throw error;
       res.redirect("/admin");
     });
+  });
+});
+
+app.get("/delete_route/route_id_:id", function (req, res) {
+  let id = req.params.id;
+  let sql = `DELETE FROM routes WHERE idRoutes = ?`;
+  db.query(sql, [id], function (err, results) {
+    if (err) throw err;
+    console.log(`route with ID = ${id} deleted`);
+    res.redirect("/admin");
+  });
+});
+
+app.get("/edit_route/route_id_:id", function (req, res) {
+  let route_id = req.params.id;
+  let sql = `SELECT 
+    routes.*,
+    dep_stations.name AS departure_station_name,
+    dep_stations.city AS departure_station_city,
+    arr_stations.name AS arrival_station_name,
+    arr_stations.city AS arrival_station_city
+  FROM
+    routes
+  JOIN
+    stations AS dep_stations ON routes.departure_station = dep_stations.idStations
+  JOIN
+    stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
+  WHERE routes.idRoutes = ?`;
+  let params = [route_id];
+  db.query(sql, params, function (err, results) {
+    if (err) throw err;
+    let route = results[0];
+    route.departure_station_city =
+      route.departure_station_name + ", " + route.departure_station_city;
+    route.arrival_station_city =
+      route.arrival_station_name + ", " + route.arrival_station_city;
+    sql = `SELECT * FROM stations`;
+    db.query(sql, function (err, results, fields) {
+      if (err) throw err;
+      let departure_station = results.find(
+        (station) => station.idStations === route.departure_station
+      );
+      let arrival_station = results.find(
+        (station) => station.idStations === route.arrival_station
+      );
+      res.render("edit_route", {
+        route: route,
+        stations: results,
+        departure_station: departure_station,
+        arrival_station: arrival_station,
+      });
+    });
+  });
+});
+
+app.post("/edit_route/route_id_:id", function (req, res) {
+  let route_id = req.params.id;
+  let departure_date = req.body.departure_date;
+  let departure_time = req.body.departure_time;
+  let departure_station = req.body.departure_station;
+  let arrival_station = req.body.arrival_station;
+  let price = req.body.price;
+
+  let sql = `UPDATE routes SET departure_date = ?, departure_time = ?, departure_station = ?, arrival_station = ?, price = ? WHERE idRoutes = ?`;
+  let params = [
+    departure_date,
+    departure_time,
+    departure_station,
+    arrival_station,
+    price,
+    route_id,
+  ];
+  db.query(sql, params, function (err, result) {
+    if (err) throw err;
+    console.log(`Route ${route_id} updated successfully`);
+    res.redirect("/admin");
   });
 });
 

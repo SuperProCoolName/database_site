@@ -1,11 +1,3 @@
-create_ticket.ejs
-
-delete_ticket:
-    delete_ticket/ticket_id_{id}
-
-filter on the same page
-(when filter on admin you go to user.ejs)
-
 ???
 user.ejs > my_tickets.ejs
 my_tickets.ejs - show all tickets that you bought
@@ -18,8 +10,17 @@ login.ejs
 register.ejs
 do something with password
 
-DONE: 
+    DONE: 
 
-buy_ticket:
-    buy_ticket/ticket_id_{id}
-    multiple filters
+    buy_ticket:
+        buy_ticket/ticket_id_{id}
+        multiple filters
+
+    create_route.ejs
+    delete_route:
+        delete_route/route_id_{id}
+
+    filter on the same page
+    (when filter on admin you go to user.ejs)
+
+    edit_route

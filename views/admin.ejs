@@ -36,14 +36,14 @@
           <td><%= routes[id].price %></td>
           <td>
             <button
-              onclick="window.location.href='/edit_route/route_id_<%= id %>'"
+              onclick="window.location.href='/edit_route/route_id_<%= routes[id].idRoutes %>'"
             >
               Edit route number <%= routes[id].idRoutes %>
             </button>
           </td>
           <td>
             <button
-              onclick="window.location.href='/delete_route/route_id_<%= id %>'"
+              onclick="window.location.href='/delete_route/route_id_<%= routes[id].idRoutes %>'"
             >
               Delete route number <%= routes[id].idRoutes %>
             </button>

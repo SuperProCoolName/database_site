@@ -23,16 +23,15 @@
       <option value="<%= stations[i].idStations %>"><%= stations[i].city %> (<%= stations[i].name %>)</option>
     <% } %>
   </select>
-
     <br>
     <label for="departure_date">Departure Date:</label>
-    <input type="date" name="departure_date" required>
+    <input type="date" name="departure_date" min="<%= new Date().toISOString().split('T')[0] %>" required>
     <br>
     <label for="departure_time">Departure Time:</label>
     <input type="time" name="departure_time" required>
     <br>
     <label for="price">Price:</label>
-    <input type="number" name="price" step="50" required>
+    <input type="number" name="price" step="50" min="0" required>
     <br>
     <button type="submit">Create Route</button>
   </form>
