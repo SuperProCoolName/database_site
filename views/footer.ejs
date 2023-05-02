@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100px;
+        background-color: #333;
+        color: #fff;
+      }
+
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .footer-contact p,
+      .footer-address p {
+        margin-left: 10px;
+      }
+
+      i {
+        font-size: 20px;
+        vertical-align: middle;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .contact-info {
+        display: flex;
+        color: #c0aaaa;
+        align-items: center;
+      }
+
+      .contact-info .icon {
+        margin-right: 10px;
+        font-size: 24px;
+      }
+
+      .contact-info .title {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .phone-number,
+      .email-address {
+        display: block;
+        color: #fff;
+      }
+      .info {
+        margin-top: 10px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <footer>
+      <div class="container">
+        <div class="contact-info">
+          <div class="icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="info">
+            <span class="title">Телефон</span>
+            <span class="phone-number">+7 (123) 456-78-90</span>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div class="icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="info">
+            <span class="title">E-mail</span>
+            <span class="email-address">info@mycompany.com</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -496,5 +496,74 @@ app.post("/edit_route/route_id_:id", function (req, res) {
   });
 });
 
+app.get("/about", function (req, res) {
+  res.render("about");
+});
+
+app.get("/reports", function (req, res) {
+  res.render("reports", {
+    table_data: [],
+    field_names: [],
+    route: [],
+    route_info: [],
+  });
+});
+
+app.post("/report_users", function (req, res) {
+  db.query(`SELECT * FROM users`, function (err, results, fields) {
+    if (err) throw err;
+    const fieldNames = fields.map((field) => field.name);
+    res.render("reports", {
+      table_data: results,
+      field_names: fieldNames,
+      route: "users",
+      route_info: [],
+    });
+  });
+});
+
+app.post("/report_customers", function (req, res) {
+  db.query(`SELECT * FROM customers`, function (err, results, fields) {
+    if (err) throw err;
+    const fieldNames = fields.map((field) => field.name);
+    res.render("reports", {
+      table_data: results,
+      field_names: fieldNames,
+      route: "customers",
+      route_info: [],
+    });
+  });
+});
+
+app.post("/report_route_:id", function (req, res) {
+  let id = req.params.id;
+  db.query(`SELECT * FROM customers`, function (err, results, fields) {
+    if (err) throw err;
+    const fieldNames = fields.map((field) => field.name);
+    let sql = `SELECT 
+    routes.*,
+    dep_stations.name AS departure_station_name,
+    dep_stations.city AS departure_station_city,
+    arr_stations.name AS arrival_station_name,
+    arr_stations.city AS arrival_station_city
+  FROM
+    routes
+  JOIN
+    stations AS dep_stations ON routes.departure_station = dep_stations.idStations
+  JOIN
+    stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
+  WHERE routes.idRoutes = ?`;
+    let params = [id];
+    db.query(sql, params, function (err, result) {
+      res.render("reports", {
+        table_data: results,
+        field_names: fieldNames,
+        route: "customers",
+        route_info: result,
+      });
+    });
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

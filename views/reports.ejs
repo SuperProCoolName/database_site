@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      body {
+        margin-top: 50px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('header') %>
+    <form method="POST" action="/report_users">
+      <button type="submit">Report users</button>
+    </form>
+    <br />
+    <form method="POST" action="/report_customers">
+      <button type="submit">Report customers</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <% for (var i = 0; i < field_names.length; i++) { %>
+          <th><%= field_names[i] %></th>
+          <% } %> <% if (route === 'customers') { %>
+          <th>Info about route</th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (var j = 0; j < table_data.length; j++) { %>
+        <tr>
+          <% for (var k = 0; k < field_names.length; k++) { %>
+          <td class="<%= k === 0 ? 'far-left' : '' %>">
+            <% if (table_data[j][field_names[k]] !== null &&
+            table_data[j][field_names[k]] !== undefined) { %> <%=
+            table_data[j][field_names[k]] %> <% } else { %> - <% } %>
+          </td>
+          <% } %> <% if (route === 'customers') { %>
+          <form
+            method="POST"
+            action="/report_route_<%= table_data[j].boughtTicketID %>"
+          >
+            <td><button>Test</button></td>
+          </form>
+          <% } %>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% if (route_info.length > 0) { %>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Departure station</th>
+        <th>Arrival station</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>City of departure</th>
+        <th>City of arrival</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+      <% for (let id = 0; id < route_info.length; id++) { %>
+      <tr>
+        <td class="far-left"><%= route_info[id].idRoutes %></td>
+        <td><%= route_info[id].departure_station_name %></td>
+        <td><%= route_info[id].arrival_station_name %></td>
+        <td><%= route_info[id].departure_date.toLocaleDateString() %></td>
+        <td><%= route_info[id].departure_time %></td>
+        <td><%= route_info[id].departure_station_city %></td>
+        <td><%= route_info[id].arrival_station_city %></td>
+        <td><%= route_info[id].price %></td>
+      </tr>
+      <% } %>
+    </table>
+    <% } %>
+  </body>
+</html>

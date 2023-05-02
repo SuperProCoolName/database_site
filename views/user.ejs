@@ -8,7 +8,7 @@
     <title>Document</title>
   </head>
   <body>
-    <% const routes_amount = routes.length %>
+    <%- include('header') %> <% const routes_amount = routes.length %>
     <h1>Найдено <%= routes_amount %> маршрутов</h1>
     <h3>
       <table>
@@ -43,7 +43,7 @@
         </tr>
         <% } %>
       </table>
-      <button onclick="window.location.href='/admin_login'">Admin panel</button>
+      <!-- <button onclick="window.location.href='/admin_login'">Admin panel</button> -->
     </h3>
     <form method="GET" action="/filter_user">
       <input

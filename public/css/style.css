@@ -12,3 +12,7 @@ td {
 td.far-left {
   border-left: 3px solid black;
 }
+
+body {
+  margin-top: 50px;
+}
