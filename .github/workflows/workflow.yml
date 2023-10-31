@@ -13,7 +13,6 @@ jobs:
       - run: sudo service mysql stop
       - uses: mirromutth/mysql-action@v1.1
         with:
-          host port: 3000
           mysql database: "railway_test"
           mysql user: root
           mysql password: root
