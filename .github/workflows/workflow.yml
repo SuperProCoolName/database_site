@@ -12,8 +12,10 @@ jobs:
       - uses: actions/setup-node@v4.0.0
       - uses: mirromutth/mysql-action@v1.1
         with:
+          host port: 3000
           mysql database: "railway_test"
           mysql user: root
           mysql password: root
+          mysql root password: root
       - run: npm ci
       - run: npm test
