@@ -1,0 +1,14 @@
+name: Node Continuous Integration
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test_pull_request:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4.0.0
+      - run: npm ci
+      - run: npm test
