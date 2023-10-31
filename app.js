@@ -1,4 +1,4 @@
-const express = require("express");
+const expressw = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
 const app = express();
@@ -100,7 +100,7 @@ db.query(`SELECT DISTINCT city FROM stations`, (err, result) => {
 
 app.get("/user", (req, res) => {
   db.query(
-    `SELECT 
+    `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -153,7 +153,7 @@ app.post("/admin_login", function (req, res) {
 
 app.get("/admin", (req, res) => {
   db.query(
-    `SELECT 
+    `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -193,7 +193,7 @@ app.get("/filter_user", function (req, res) {
   var maxPrice = 9999; // устанавливаем максимальную цену по умолчанию
   let cityConditionDeparture = "";
   let cityConditionArrival = "";
-  var sql = `SELECT 
+  var sql = `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -205,7 +205,7 @@ app.get("/filter_user", function (req, res) {
       stations AS dep_stations ON routes.departure_station = dep_stations.idStations
     JOIN
       stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
-    WHERE 
+    WHERE
       price >= ? and price <= ?
       ${cityConditionDeparture}${cityConditionArrival}`;
   var params = [priceMin || minPrice, priceMax || maxPrice];
@@ -251,7 +251,7 @@ app.get("/filter_admin", function (req, res) {
   var maxPrice = 9999; // устанавливаем максимальную цену по умолчанию
   let cityConditionDeparture = "";
   let cityConditionArrival = "";
-  var sql = `SELECT 
+  var sql = `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -263,7 +263,7 @@ app.get("/filter_admin", function (req, res) {
       stations AS dep_stations ON routes.departure_station = dep_stations.idStations
     JOIN
       stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
-    WHERE 
+    WHERE
       price >= ? and price <= ?
       ${cityConditionDeparture}${cityConditionArrival}`;
   var params = [priceMin || minPrice, priceMax || maxPrice];
@@ -302,7 +302,7 @@ app.get("/filter_admin", function (req, res) {
 app.get("/buy_ticket/ticket_id_:id", function (req, res) {
   let id = req.params.id;
   db.query(
-    `SELECT 
+    `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -336,7 +336,7 @@ app.post("/buy_ticket", function (req, res) {
     let params = [nextCustomerId, ticket_id, email];
     db.query(sql, params, function (error, results, fields) {
       if (error) throw error;
-      let sql = `SELECT 
+      let sql = `SELECT
     routes.idRoutes,
     routes.departure_date,
     routes.departure_time,
@@ -432,7 +432,7 @@ app.get("/delete_route/route_id_:id", function (req, res) {
 
 app.get("/edit_route/route_id_:id", function (req, res) {
   let route_id = req.params.id;
-  let sql = `SELECT 
+  let sql = `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -540,7 +540,7 @@ app.post("/report_route_:id", function (req, res) {
   db.query(`SELECT * FROM customers`, function (err, results, fields) {
     if (err) throw err;
     const fieldNames = fields.map((field) => field.name);
-    let sql = `SELECT 
+    let sql = `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
