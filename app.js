@@ -91,6 +91,72 @@ db.query(
   }
 );
 
+db.query(
+  `INSERT INTO stations VALUES (0,'Kipushnaya','Keriç'),
+  (1,'Kavkazskaya','Aqyar'),
+  (2,'Eşıl-adayskaya','Aqmescıt'),
+  (3,'Osmanskaya','Eski Qırım'),
+  (4,'Bebrito','Kefe'),
+  (5,'Mussolini','Kezlev'),
+  (6,'Elvino','Aqyar')`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO customers VALUES (0,1,'email0@gmail.com'),
+  (1,7,'my_email@yahoo.com'),
+  (2,8,'totally_real_user@zvonite.mne'),
+  (3,3,'elvin@loh.ru'),
+  (4,4,'bebra@amogus.sus'),
+  (5,7,'vova_loshara@gmail.com')`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO users VALUES (0,'totally@mail.ru','normal',NULL,0),
+  (1,'admin@mail.ru','admin_password',NULL,1),
+  (2,'email@gmail.com','password',3,0)`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO routes VALUES (0,'2022-07-01','22:15:36',6,4,250),
+  (1,'2022-07-02','22:15:36',0,3,300),
+  (2,'2022-07-03','22:15:36',4,2,350),
+  (3,'2022-07-04','22:15:36',3,1,400),
+  (4,'2022-07-05','22:15:36',1,0,450),
+  (5,'2022-07-06','22:15:36',2,5,500),
+  (6,'2022-08-10','22:15:37',4,6,550),
+  (7,'2022-08-11','22:15:38',4,5,600),
+  (8,'2023-05-03','00:00:00',0,2,50),
+  (9,'2023-05-03','03:34:00',6,4,300)`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
 const allCities = [];
 
 db.query(`SELECT DISTINCT city FROM stations`, (err, result) => {
@@ -100,7 +166,7 @@ db.query(`SELECT DISTINCT city FROM stations`, (err, result) => {
 
 app.get("/user", (req, res) => {
   db.query(
-    `SELECT 
+    `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -153,7 +219,7 @@ app.post("/admin_login", function (req, res) {
 
 app.get("/admin", (req, res) => {
   db.query(
-    `SELECT 
+    `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -193,7 +259,7 @@ app.get("/filter_user", function (req, res) {
   var maxPrice = 9999; // устанавливаем максимальную цену по умолчанию
   let cityConditionDeparture = "";
   let cityConditionArrival = "";
-  var sql = `SELECT 
+  var sql = `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -205,7 +271,7 @@ app.get("/filter_user", function (req, res) {
       stations AS dep_stations ON routes.departure_station = dep_stations.idStations
     JOIN
       stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
-    WHERE 
+    WHERE
       price >= ? and price <= ?
       ${cityConditionDeparture}${cityConditionArrival}`;
   var params = [priceMin || minPrice, priceMax || maxPrice];
@@ -251,7 +317,7 @@ app.get("/filter_admin", function (req, res) {
   var maxPrice = 9999; // устанавливаем максимальную цену по умолчанию
   let cityConditionDeparture = "";
   let cityConditionArrival = "";
-  var sql = `SELECT 
+  var sql = `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -263,7 +329,7 @@ app.get("/filter_admin", function (req, res) {
       stations AS dep_stations ON routes.departure_station = dep_stations.idStations
     JOIN
       stations AS arr_stations ON routes.arrival_station = arr_stations.idStations
-    WHERE 
+    WHERE
       price >= ? and price <= ?
       ${cityConditionDeparture}${cityConditionArrival}`;
   var params = [priceMin || minPrice, priceMax || maxPrice];
@@ -302,7 +368,7 @@ app.get("/filter_admin", function (req, res) {
 app.get("/buy_ticket/ticket_id_:id", function (req, res) {
   let id = req.params.id;
   db.query(
-    `SELECT 
+    `SELECT
       routes.*,
       dep_stations.name AS departure_station_name,
       dep_stations.city AS departure_station_city,
@@ -336,7 +402,7 @@ app.post("/buy_ticket", function (req, res) {
     let params = [nextCustomerId, ticket_id, email];
     db.query(sql, params, function (error, results, fields) {
       if (error) throw error;
-      let sql = `SELECT 
+      let sql = `SELECT
     routes.idRoutes,
     routes.departure_date,
     routes.departure_time,
@@ -432,7 +498,7 @@ app.get("/delete_route/route_id_:id", function (req, res) {
 
 app.get("/edit_route/route_id_:id", function (req, res) {
   let route_id = req.params.id;
-  let sql = `SELECT 
+  let sql = `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
@@ -540,7 +606,7 @@ app.post("/report_route_:id", function (req, res) {
   db.query(`SELECT * FROM customers`, function (err, results, fields) {
     if (err) throw err;
     const fieldNames = fields.map((field) => field.name);
-    let sql = `SELECT 
+    let sql = `SELECT
     routes.*,
     dep_stations.name AS departure_station_name,
     dep_stations.city AS departure_station_city,
