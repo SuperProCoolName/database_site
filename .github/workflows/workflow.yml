@@ -10,5 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4.0.0
+      - uses: mirromutth/mysql-action@v1.1
       - run: npm ci
       - run: npm test
