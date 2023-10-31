@@ -6,10 +6,14 @@ on:
 
 jobs:
   test_pull_request:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4.0.0
       - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql database: "railway_test"
+          mysql user: root
+          mysql password: {{ secrets.DATABASE_PASSWORD }}
       - run: npm ci
       - run: npm test
