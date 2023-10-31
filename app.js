@@ -91,6 +91,72 @@ db.query(
   }
 );
 
+db.query(
+  `INSERT INTO stations VALUES (0,'Kipushnaya','Keriç'),
+  (1,'Kavkazskaya','Aqyar'),
+  (2,'Eşıl-adayskaya','Aqmescıt'),
+  (3,'Osmanskaya','Eski Qırım'),
+  (4,'Bebrito','Kefe'),
+  (5,'Mussolini','Kezlev'),
+  (6,'Elvino','Aqyar')`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO customers VALUES (0,1,'email0@gmail.com'),
+  (1,7,'my_email@yahoo.com'),
+  (2,8,'totally_real_user@zvonite.mne'),
+  (3,3,'elvin@loh.ru'),
+  (4,4,'bebra@amogus.sus'),
+  (5,7,'vova_loshara@gmail.com')`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO users VALUES (0,'totally@mail.ru','normal',NULL,0),
+  (1,'admin@mail.ru','admin_password',NULL,1),
+  (2,'email@gmail.com','password',3,0)`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
+db.query(
+  `INSERT INTO routes VALUES (0,'2022-07-01','22:15:36',6,4,250),
+  (1,'2022-07-02','22:15:36',0,3,300),
+  (2,'2022-07-03','22:15:36',4,2,350),
+  (3,'2022-07-04','22:15:36',3,1,400),
+  (4,'2022-07-05','22:15:36',1,0,450),
+  (5,'2022-07-06','22:15:36',2,5,500),
+  (6,'2022-08-10','22:15:37',4,6,550),
+  (7,'2022-08-11','22:15:38',4,5,600),
+  (8,'2023-05-03','00:00:00',0,2,50),
+  (9,'2023-05-03','03:34:00',6,4,300)`,
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted into stations");
+    }
+  }
+);
+
 const allCities = [];
 
 db.query(`SELECT DISTINCT city FROM stations`, (err, result) => {
